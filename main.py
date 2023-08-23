@@ -1,5 +1,6 @@
 import openpyxl
 import csv
+import io
 
 choose_file = input('Введи имя файла с расширением: ')
 
@@ -9,7 +10,7 @@ if '.csv' in choose_file:
     # Конвертация csv в excel
     wb = openpyxl.Workbook()
     ws = wb.active
-    with open(f'{choose_file}.csv') as f:
+    with io.open(f'{choose_file}.csv', encoding='utf-8') as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             ws.append(row)
