@@ -1,6 +1,7 @@
 import openpyxl
 import csv
 import io
+import pandas as pd
 
 choose_file = input('Введи имя файла с расширением: ')
 
@@ -19,6 +20,12 @@ if '.csv' in choose_file:
 
 if '.xlsx' in choose_file:
     choose_file = choose_file.replace('.xlsx', '')
+    wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
+
+if '.txt' in choose_file:
+    choose_file = choose_file.replace('.txt', '')
+    ex = pd.read_csv(f'{choose_file}.txt', sep='\t', encoding='windows-1251')
+    ex.to_excel(f'{choose_file}.xlsx', index=False)
     wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
 
 # Получаем доступ к активному листу
