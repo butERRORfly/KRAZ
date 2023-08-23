@@ -1,19 +1,24 @@
 import openpyxl
 import csv
 
-choose_file = input('Введи имя файла без .csv: ')
+choose_file = input('Введи имя файла с расширением: ')
 
-# Конвертация csv в excel
-wb = openpyxl.Workbook()
-ws = wb.active
-with open(f'{choose_file}.csv') as f:
-    reader = csv.reader(f, delimiter=';')
-    for row in reader:
-        ws.append(row)
-wb.save(f'{choose_file}.xlsx')
+# Проверка на расширение файла (.csv, .xlsx, .txt)
+if '.csv' in choose_file:
+    choose_file = choose_file.replace('.csv', '')
+    # Конвертация csv в excel
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    with open(f'{choose_file}.csv') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+            ws.append(row)
+    wb.save(f'{choose_file}.xlsx')
+    wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
 
-# Получаем данные из файла
-wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
+if '.xlsx' in choose_file:
+    choose_file = choose_file.replace('.xlsx', '')
+    wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
 
 # Получаем доступ к активному листу
 ws = wb.active
@@ -46,7 +51,7 @@ for i in search_value_range:
         # Добавляем значения ячеек на новый лист "Bad"
         bad_values = [bad_sheet.append(row) for row in ws.iter_rows(min_row=i.row, max_row=i.row, values_only=True)]
 
-    # обрабатываем флаг "None"
+    # Обрабатываем флаг "None"
     if i.value is None:
         # Добавляем значения ячеек на новый лист "None"
         none_values = [none_sheet.append(row) for row in ws.iter_rows(min_row=i.row, max_row=i.row, values_only=True)]
@@ -57,6 +62,8 @@ question = input('Введите дату: ')
 # Диапазон ячеек, на котором мы ищем требуемую дату поиска
 search_date_range = ws['B']
 for el in search_date_range:
+
+    # Проверяем есть ли значение в ячейке
     if el.value is not None:
         # Задаём фильтр поиска по требуемой дате
         filter_date_search = question
