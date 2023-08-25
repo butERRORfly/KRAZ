@@ -10,6 +10,7 @@ choose_file = input('Введи имя файла с расширением: ')
 if '.csv' in choose_file:
     # Убираем расширение файла
     choose_file = choose_file.replace('.csv', '')
+    choose_file = choose_file.upper()
     # Конвертация csv в excel
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -27,12 +28,14 @@ if '.csv' in choose_file:
 if '.xlsx' in choose_file:
     # Убираем расширение файла
     choose_file = choose_file.replace('.xlsx', '')
+    choose_file = choose_file.upper()
     # Считываем данные из книги
     wb = openpyxl.load_workbook(f'{choose_file}.xlsx')
 
 if '.txt' in choose_file:
     # Убираем расширение файла
     choose_file = choose_file.replace('.txt', '')
+    choose_file = choose_file.upper()
     ex = pd.read_csv(f'{choose_file}.txt', sep='\t', encoding='windows-1251')
     ex.to_excel(f'{choose_file}.xlsx', index=False)
     # считываем данные из книги
